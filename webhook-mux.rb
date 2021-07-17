@@ -2,23 +2,12 @@
 #
 # Listens for webhooks from a GitHub repository and forwards it to multiple configurable endpoints
 #
-# Usage:
-#   $ ./webhook-mux.rb [-c config.yml] [-p port] [-u url1,url2,...]
-#
-# Config:
-#   -c, --config=CONFIG
-#       Path to config file
-#   -p, --port=PORT
-#       Port to listen on for incoming hooks
-#   -u, --url=URL
-#       CSV list of URLs to forward webhooks to
-#
-# Example:
-#   $ ./webhook-mux.rb -c config.yml -p 9090 -u http://localhost:8080,http://localhost:8081
-#
-# Notes:
-#   - Config file is optional, but if provided, must be valid YAML
-#   - If no port is provided, the default port will be used
+
+# If urls.txt dosn't exist, report an error and exit
+unless File.exist?('urls.txt')
+  puts "Error: urls.txt not found"
+  exit 1
+end
 
 # Start listening for webhooks
 require 'sinatra'
@@ -210,3 +199,16 @@ post '/async' do
    
 end
 
+# Echo endpoint returns the request body back to the client
+post '/echo' do
+  # Start time
+  client_start_time = Time.now
+  logger.info("Echo started at #{client_start_time}")
+  logger.info("  Payload: #{request.body.read}")
+  logger.info("  Inspect: #{request.inspect}")
+  # Respond with the request body
+  json_response({"echo" => request.body.read})
+  # Client end time
+  client_end_time = Time.now - client_start_time
+  logger.info("Echo finished at #{Time.now} - #{Time.now - client_start_time}")
+end
