@@ -1,0 +1,32 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    json (2.5.1)
+    logger (1.4.3)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
+    parallel (1.20.1)
+    rack (2.2.3)
+    rack-protection (2.1.0)
+      rack
+    ruby2_keywords (0.0.5)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
+    tilt (2.0.10)
+    uri (0.10.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json
+  logger
+  parallel
+  sinatra
+  uri
+
+BUNDLED WITH
+   2.1.2
