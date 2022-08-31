@@ -5,7 +5,7 @@ GEM
     logger (1.4.3)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    parallel (1.20.1)
+    parallel (1.22.1)
     rack (2.2.3.1)
     rack-protection (2.2.0)
       rack
