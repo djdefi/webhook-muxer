@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     json (2.6.2)
-    logger (1.5.1)
+    logger (1.5.3)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     parallel (1.22.1)
