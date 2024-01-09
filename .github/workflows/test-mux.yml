@@ -24,11 +24,11 @@ jobs:
 
       # Start each webhook-muxer instance
       - name: Start webhook-muxer instance 1
-        run: nohup bash -c "ruby webhook-muxer.rb --port 8000 &" && sleep 1
+        run: nohup bash -c "ruby webhook-mux.rb --port 8000 &" && sleep 1
       - name: Start webhook-muxer instance 2
-        run: nohup bash -c "ruby webhook-muxer.rb --port 8001 &" && sleep 1
+        run: nohup bash -c "ruby webhook-mux.rb --port 8001 &" && sleep 1
       - name: Start webhook-muxer instance 3
-        run: nohup bash -c "ruby webhook-muxer.rb --port 8002 &" && sleep 1
+        run: nohup bash -c "ruby webhook-mux.rb --port 8002 &" && sleep 1
 
       # Send a dummy webhook to each instance
       - name: Send dummy webhook
