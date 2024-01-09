@@ -1,0 +1,38 @@
+name: Test muxer
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v4
+      
+      # Setup Ruby
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3' # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      # Create the urls.txt file
+      - name: Create urls.txt
+        run: |
+          echo "http://localhost:8000/" > urls.txt
+          echo "http://localhost:8001/" >> urls.txt
+          echo "http://localhost:8002/" >> urls.txt
+
+      # Start each webhook-muxer instance
+      - name: Start webhook-muxer instance 1
+        run: nohup bash -c "ruby webhook-muxer.rb --port 8000 &" && sleep 1
+      - name: Start webhook-muxer instance 2
+        run: nohup bash -c "ruby webhook-muxer.rb --port 8001 &" && sleep 1
+      - name: Start webhook-muxer instance 3
+        run: nohup bash -c "ruby webhook-muxer.rb --port 8002 &" && sleep 1
+
+      # Send a dummy webhook to each instance
+      - name: Send dummy webhook
+        run: |
+          curl -X POST -d '{"foo": "bar"}' http://localhost:8000/
+          curl -X POST -d '{"foo": "bar"}' http://localhost:8001/
+          curl -X POST -d '{"foo": "bar"}' http://localhost:8002/
