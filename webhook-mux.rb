@@ -17,6 +17,7 @@ require 'uri'
 require 'net/http'
 require 'logger'
 require 'parallel'
+require 'optparse'
 
 # Load list of URLs to forward webhooks to from urls.txt
 def load_urls
@@ -38,9 +39,19 @@ logger.formatter = proc do |severity, datetime, progname, msg|
   "#{datetime.strftime("%Y-%m-%d %H:%M:%S")} - #{severity} - #{msg}\n"
 end
 
+# Parse port option
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: webhook-mux.rb [options]"
+
+  opts.on("-p", "--port PORT", "Port to listen on") do |v|
+    options[:port] = v
+  end
+end.parse!
 
 # Set up Sinatra
 set :logger, logger
+set :port, options[:port] if options[:port]
 set :public_folder, File.dirname(__FILE__) + '/public'
 set :views, File.dirname(__FILE__) + '/views'
 
