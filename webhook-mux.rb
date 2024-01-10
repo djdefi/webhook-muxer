@@ -113,5 +113,4 @@ post '/echo' do
 end
 
 # Start the Sinatra application
-run! if __FILE__ == $PROGRAM_NAME
-
+Sinatra::Application.run! if __FILE__ == $PROGRAM_NAME
