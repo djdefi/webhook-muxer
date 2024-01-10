@@ -36,5 +36,6 @@ jobs:
 
       # Send a dummy webhook to the webhook-muxer instance
       - name: Send dummy webhook
-        run: curl -X POST -d '{"foo": "bar"}' http://localhost:4567/
+        run: |
+          curl -X POST -d '{"foo": "bar"}' http://localhost:4567/
 
