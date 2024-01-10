@@ -9,6 +9,24 @@ unless File.exist?('urls.txt')
   exit 1
 end
 
+require 'optparse'
+
+# Buffer ARGV
+args_buffer = ARGV.clone
+
+# Option parsing
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: webhook-mux.rb [options]"
+
+  opts.on("-p", "--port PORT", "Port to listen on") do |v|
+    options[:port] = v
+  end
+end.parse!
+
+# Restore ARGV
+ARGV.replace args_buffer
+
 # Start listening for webhooks
 require 'sinatra'
 require 'yaml'
@@ -17,7 +35,6 @@ require 'uri'
 require 'net/http'
 require 'logger'
 require 'parallel'
-require 'optparse'
 
 # Load list of URLs to forward webhooks to from urls.txt
 def load_urls
