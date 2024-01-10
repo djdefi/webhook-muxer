@@ -15,13 +15,12 @@ jobs:
           ruby-version: '3.3' # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      # Start simple nc servers to receive forwarded webhooks
-      - name: Start NC Server 1
-        run: nohup bash -c "nc -l 8000 > nc1.log &" && sleep 1
-      - name: Start NC Server 2
-        run: nohup bash -c "nc -l 8001 > nc2.log &" && sleep 1
-      - name: Start NC Server 3
-        run: nohup bash -c "nc -l 8002 > nc3.log &" && sleep 1
+      - name: Start Python HTTP Server 1
+        run: nohup bash -c "python3 -m http.server 8000 > server1.log 2>&1 &" && sleep 1
+      - name: Start Python HTTP Server 2
+        run: nohup bash -c "python3 -m http.server 8001 > server2.log 2>&1 &" && sleep 1
+      - name: Start Python HTTP Server 3
+        run: nohup bash -c "python3 -m http.server 8002 > server3.log 2>&1 &" && sleep 1
 
       # Create the urls.txt file pointing to nc servers
       - name: Create urls.txt
