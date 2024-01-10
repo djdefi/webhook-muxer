@@ -15,24 +15,26 @@ jobs:
           ruby-version: '3.3' # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      # Create the urls.txt file
+      # Start simple nc servers to receive forwarded webhooks
+      - name: Start NC Server 1
+        run: nohup bash -c "nc -l 8000 > nc1.log &" && sleep 1
+      - name: Start NC Server 2
+        run: nohup bash -c "nc -l 8001 > nc2.log &" && sleep 1
+      - name: Start NC Server 3
+        run: nohup bash -c "nc -l 8002 > nc3.log &" && sleep 1
+
+      # Create the urls.txt file pointing to nc servers
       - name: Create urls.txt
         run: |
           echo "http://localhost:8000/" > urls.txt
           echo "http://localhost:8001/" >> urls.txt
           echo "http://localhost:8002/" >> urls.txt
 
-      # Start each webhook-muxer instance
-      - name: Start webhook-muxer instance 1
-        run: nohup bash -c "PORT=8000 bundle exec ruby webhook-mux.rb &" && sleep 1
-      - name: Start webhook-muxer instance 2
-        run: nohup bash -c "PORT=8001 bundle exec ruby webhook-mux.rb &" && sleep 1
-      - name: Start webhook-muxer instance 3
-        run: nohup bash -c "PORT=8002 bundle exec ruby webhook-mux.rb &" && sleep 1
+      # Start the webhook-muxer instance (assuming it forwards to urls in urls.txt)
+      - name: Start webhook-muxer instance
+        run: nohup bash -c "bundle exec ruby webhook-mux.rb &" && sleep 1
 
-      # Send a dummy webhook to each instance
+      # Send a dummy webhook to the webhook-muxer instance
       - name: Send dummy webhook
-        run: |
-          curl -X POST -d '{"foo": "bar"}' http://localhost:8000/
-          curl -X POST -d '{"foo": "bar"}' http://localhost:8001/
-          curl -X POST -d '{"foo": "bar"}' http://localhost:8002/
+        run: curl -X POST -d '{"foo": "bar"}' http://localhost:4567/
+
