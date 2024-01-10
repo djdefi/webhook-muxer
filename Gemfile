@@ -5,4 +5,4 @@ gem 'json'
 gem 'uri'
 gem 'logger'
 gem 'parallel'
-
+gem 'puma'
