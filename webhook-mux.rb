@@ -56,16 +56,6 @@ logger.formatter = proc do |severity, datetime, progname, msg|
   "#{datetime.strftime("%Y-%m-%d %H:%M:%S")} - #{severity} - #{msg}\n"
 end
 
-# Parse port option
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: webhook-mux.rb [options]"
-
-  opts.on("-p", "--port PORT", "Port to listen on") do |v|
-    options[:port] = v
-  end
-end.parse!
-
 # Set up Sinatra
 set :logger, logger
 set :port, options[:port] if options[:port]
