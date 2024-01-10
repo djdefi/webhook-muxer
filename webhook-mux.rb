@@ -38,9 +38,15 @@ logger.formatter = proc do |severity, datetime, progname, msg|
 end
 
 # Set up Sinatra
-options[:port] = ENV['PORT']
+# Initialize options hash
+options = {}
+
+# Set up Sinatra
+options[:port] = ENV['PORT'] || 4567 # default port 4567
+set :port, options[:port].to_i
+
 set :logger, logger
-set :port, options[:port] if options[:port]
+
 set :public_folder, File.dirname(__FILE__) + '/public'
 set :views, File.dirname(__FILE__) + '/views'
 
