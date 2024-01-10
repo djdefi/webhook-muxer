@@ -10,24 +10,6 @@ unless File.exist?('urls.txt')
 end
 
 require 'optparse'
-
-# Buffer ARGV
-args_buffer = ARGV.clone
-
-# Option parsing
-options = {}
-OptionParser.new do |opts|
-  opts.banner = "Usage: webhook-mux.rb [options]"
-
-  opts.on("-p", "--port PORT", "Port to listen on") do |v|
-    options[:port] = v
-  end
-end.parse!
-
-# Restore ARGV
-ARGV.replace args_buffer
-
-# Start listening for webhooks
 require 'sinatra'
 require 'yaml'
 require 'json'
@@ -47,7 +29,6 @@ def load_urls
   urls
 end
 
-
 # Set up logger
 logger = Logger.new(STDOUT)
 logger.level = Logger::INFO
@@ -57,11 +38,11 @@ logger.formatter = proc do |severity, datetime, progname, msg|
 end
 
 # Set up Sinatra
+options[:port] = ENV['PORT']
 set :logger, logger
 set :port, options[:port] if options[:port]
 set :public_folder, File.dirname(__FILE__) + '/public'
 set :views, File.dirname(__FILE__) + '/views'
-
 
 # Set up Sinatra helpers
 helpers do
