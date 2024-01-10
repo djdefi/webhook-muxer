@@ -15,26 +15,21 @@ jobs:
           ruby-version: '3.3' # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      - name: Start Python HTTP Server 1
-        run: nohup bash -c "python3 -m http.server 8000 > server1.log 2>&1 &" && sleep 1
-      - name: Start Python HTTP Server 2
-        run: nohup bash -c "python3 -m http.server 8001 > server2.log 2>&1 &" && sleep 1
-      - name: Start Python HTTP Server 3
-        run: nohup bash -c "python3 -m http.server 8002 > server3.log 2>&1 &" && sleep 1
-
-      # Create the urls.txt file pointing to nc servers
-      - name: Create urls.txt
+      # Create the urls.txt file for echo testing
+      - name: Create urls.txt for echo testing
         run: |
-          echo "http://localhost:8000/" > urls.txt
-          echo "http://localhost:8001/" >> urls.txt
-          echo "http://localhost:8002/" >> urls.txt
+          echo "http://localhost:8001/echo" > urls.txt
+          echo "http://localhost:8002/echo" >> urls.txt
 
-      # Start the webhook-muxer instance (assuming it forwards to urls in urls.txt)
-      - name: Start webhook-muxer instance
-        run: nohup bash -c "bundle exec ruby webhook-mux.rb &" && sleep 1
+      # Start each webhook-muxer instance
+      - name: Start webhook-muxer instance 1
+        run: nohup bash -c "PORT=8000 bundle exec ruby webhook-mux.rb &" && sleep 1
+      - name: Start webhook-muxer instance 2
+        run: nohup bash -c "PORT=8001 bundle exec ruby webhook-mux.rb &" && sleep 1
+      - name: Start webhook-muxer instance 3
+        run: nohup bash -c "PORT=8002 bundle exec ruby webhook-mux.rb &" && sleep 1
 
-      # Send a dummy webhook to the webhook-muxer instance
-      - name: Send dummy webhook
+      # Send a dummy webhook to the first instance
+      - name: Send dummy webhook to test echo
         run: |
-          curl -X POST -d '{"foo": "bar"}' http://localhost:4567/
-
+          curl -X POST -d '{"test": "data"}' http://localhost:8000/
