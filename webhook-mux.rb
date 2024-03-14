@@ -84,6 +84,9 @@ def handle_webhook(request_body, logger)
   end
 
   errors
+rescue JSON::ParserError => e
+  logger.error("Failed to parse JSON: #{e.message}")
+  []  
 end
 
 # Routes
