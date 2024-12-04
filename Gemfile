@@ -7,4 +7,4 @@ gem 'logger'
 gem 'parallel'
 gem 'puma'
 
-gem "rackup", "~> 2.1"
+gem "rackup", "~> 2.2"
