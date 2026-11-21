@@ -2,20 +2,20 @@ GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.3.0)
-    json (2.12.2)
+    json (2.21.2)
     logger (1.7.0)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     parallel (1.27.0)
-    puma (6.6.0)
+    puma (7.2.3)
       nio4r (~> 2.0)
-    rack (3.2.3)
+    rack (3.2.9)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-session (2.1.1)
+    rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rackup (2.2.1)
@@ -29,16 +29,16 @@ GEM
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     tilt (2.6.1)
-    uri (1.0.3)
+    uri (1.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
+  json (~> 2.19)
   logger
   parallel
-  puma
+  puma (~> 7.2)
   rackup (~> 2.2)
   sinatra
   uri
